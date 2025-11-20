@@ -10,7 +10,7 @@ This project investigates how diffusion models can be simplified for small-scale
 - Minimal DDPM implementation for educational purposes
 - Comprehensive optimization strategies (pruning, architecture reduction)
 - Extensive evaluation metrics (Pseudo-FID, SSIM, efficiency benchmarks)
-- Well-documented codebase suitable for learning diffusion models
+- Self-contained Jupyter notebook - everything in one place!
 
 ## Results Summary
 
@@ -59,12 +59,8 @@ L = E_{t,x_0,ε} ||ε - ε_θ(√(ᾱ_t)x_0 + √(1-ᾱ_t)ε, t)||²
 
 ```bash
 # Clone the repository
-git clone https://github.com/yourusername/mini-diffusion-mnist.git
+git clone https://github.com/cmagapu/mini-diffusion-mnist.git
 cd mini-diffusion-mnist
-
-# Create virtual environment
-python -m venv venv
-source venv/bin/activate  # On Windows: venv\Scripts\activate
 
 # Install dependencies
 pip install torch torchvision numpy matplotlib scikit-image scipy
@@ -72,86 +68,34 @@ pip install torch torchvision numpy matplotlib scikit-image scipy
 
 ## Usage
 
-### Training Baseline Model
+Simply open and run the Jupyter notebook:
 
-```python
-# Train baseline DDPM
-python train_baseline.py --epochs 50 --lr 1e-3 --batch_size 128
+```bash
+jupyter notebook diffusion_model.ipynb
 ```
 
-### Applying Pruning
+The notebook contains all the code for:
+- Training the baseline DDPM
+- Applying pruning (structured + unstructured)
+- Training architectural variants (reduced channels, shallow network)
+- Fine-tuning all models
+- Generating samples
+- Comprehensive evaluation with all metrics
 
-```python
-# Apply structured + unstructured pruning and fine-tune
-python prune_model.py \
-    --checkpoint baseline_model.pt \
-    --structured_ratio 0.1 \
-    --unstructured_ratio 0.3 \
-    --finetune_epochs 20 \
-    --finetune_lr 1e-4
-```
 
-### Training Architectural Variants
+## Notebook Structure
 
-```python
-# Reduced channels model (75% smaller)
-python train_variant.py \
-    --architecture reduced_channels \
-    --channels 16 32 64 \
-    --epochs 50 \
-    --finetune_epochs 10 \
-    --finetune_lr 1e-5
+The notebook is organized into the following sections:
 
-# Shallow network (15% smaller)
-python train_variant.py \
-    --architecture shallow \
-    --channels 64 128 \
-    --epochs 50 \
-    --finetune_epochs 20 \
-    --finetune_lr 1e-4
-```
-
-### Generating Samples
-
-```python
-# Generate 10,000 samples from trained model
-python generate.py \
-    --checkpoint model.pt \
-    --num_samples 10000 \
-    --output_dir samples/
-```
-
-### Evaluation
-
-```python
-# Run comprehensive evaluation
-python evaluate.py \
-    --model_path model.pt \
-    --num_samples 10000 \
-    --real_data_path mnist_test.pt
-```
-
-## Project Structure
-
-```
-mini-diffusion-mnist/
-├── README.md
-├── requirements.txt
-├── train_baseline.py          # Baseline model training
-├── prune_model.py             # Pruning implementation
-├── train_variant.py           # Architectural variants training
-├── generate.py                # Sample generation
-├── evaluate.py                # Comprehensive evaluation
-├── models/
-│   ├── unet.py               # U-Net architecture
-│   ├── diffusion.py          # DDPM implementation
-│   └── classifier.py         # MNIST classifier for metrics
-├── utils/
-│   ├── noise_schedule.py     # Cosine beta schedule
-│   ├── metrics.py            # SSIM, Pseudo-FID calculations
-│   └── visualization.py      # Sample visualization
-└── checkpoints/              # Saved model checkpoints
-```
+1. **Setup & Imports** - Dependencies and utility functions
+2. **U-Net Architecture** - Simplified U-Net with time embeddings
+3. **DDPM Implementation** - Forward/reverse diffusion processes
+4. **Baseline Training** - Train baseline model (50 epochs)
+5. **Pruning** - Structured (10%) + Unstructured (30%) pruning
+6. **Fine-tuning Pruned Model** - Recover performance (20 epochs)
+7. **Architectural Variants** - Reduced channels & shallow network
+8. **Evaluation** - SSIM, Pseudo-FID, efficiency metrics
+9. **Visualization** - Generated samples and comparisons
 
 ## Optimization Techniques
 
@@ -220,18 +164,6 @@ mini-diffusion-mnist/
 - Implement more efficient sampling algorithms (DDIM, DPM-Solver)
 - Add conditional generation capabilities
 
-## Citation
-
-If you use this code in your research, please cite:
-
-```bibtex
-@article{magapu2024minidiffusion,
-  title={Mini Diffusion Model for MNIST: Exploring optimization techniques},
-  author={Magapu, Chandana and Jaiswal, Aproorva},
-  journal={UMass Amherst Course Project},
-  year={2024}
-}
-```
 
 ## References
 
@@ -248,9 +180,3 @@ MIT License - see LICENSE file for details
 
 - **Chandana Magapu** - *UMass Amherst* - hmagapu@umass.edu
 - **Aproorva Jaiswal** - *UMass Amherst* - ajaiswal@umass.edu
-
-## Acknowledgments
-
-- Course: COMPSCI 589 - Machine Learning (UMass Amherst)
-- Dataset: MNIST handwritten digits (LeCun et al.)
-- Inspired by recent advances in efficient diffusion models
